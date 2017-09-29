@@ -6,7 +6,7 @@ case "$(uname -s)" in
    ;;
 
  Linux)
-   if [[$("cat /proc/1/cgroup | grep docker | wc -l") > 0]]; then
+   if [[ "$(cat /proc/1/cgroup | grep docker | wc -l)" > 0]]; then
      PLATFORM='docker-linux'
    else
      PLATFORM='linux'
