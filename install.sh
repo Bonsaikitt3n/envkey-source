@@ -6,7 +6,11 @@ case "$(uname -s)" in
    ;;
 
  Linux)
-   PLATFORM='linux'
+   if [[$("cat /proc/1/cgroup | grep docker | wc -l") > 0]]; then
+     PLATFORM='docker-linux'
+   else
+     PLATFORM='linux'
+   fi
    ;;
 
  FreeBSD)
@@ -47,7 +51,7 @@ function download_envkey {
   curl -s -o envkey-source.tar.gz "${url}"
   tar zxf envkey-source.tar.gz
 
-  if [ "$PLATFORM" == "darwin" ]; then
+  if [ "$PLATFORM" == "darwin" ] || [ "$PLATFORM" == "docker-linux" ] ; then
     mv envkey-source /usr/local/bin/
     echo "envkey-source is installed in /usr/local/bin"
   elif [ "$PLATFORM" == "windows" ]; then
